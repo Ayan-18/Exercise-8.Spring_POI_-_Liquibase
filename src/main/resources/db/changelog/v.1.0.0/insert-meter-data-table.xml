@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="insert-meter-data-table" author="Ayan">
+        <preConditions onFail="WARN">
+            <sqlCheck expectedResult="5">select count(*)
+                                         from meter</sqlCheck>
+        </preConditions>
+        <insert tableName="meter_data">
+            <column name="meter_id" value="111"/>
+            <column name="date_of_data" value="2022-11-01 10:55:00.000000"/>
+            <column name="reading" value="10"/>
+        </insert>
+        <insert tableName="meter_data">
+            <column name="meter_id" value="111"/>
+            <column name="date_of_data" value="2022-11-30 10:55:00.000000"/>
+            <column name="reading" value="35"/>
+        </insert>
+        <insert tableName="meter_data">
+            <column name="meter_id" value="222"/>
+            <column name="date_of_data" value="2022-11-01 10:55:00.000000"/>
+            <column name="reading" value="20"/>
+        </insert>
+        <insert tableName="meter_data">
+            <column name="meter_id" value="222"/>
+            <column name="date_of_data" value="2022-11-30 10:55:00.000000"/>
+            <column name="reading" value="55"/>
+        </insert><insert tableName="meter_data">
+        <column name="meter_id" value="333"/>
+        <column name="date_of_data" value="2022-11-01 10:55:00.000000"/>
+        <column name="reading" value="45"/>
+    </insert>
+        <insert tableName="meter_data">
+            <column name="meter_id" value="333"/>
+            <column name="date_of_data" value="2022-11-30 10:55:00.000000"/>
+            <column name="reading" value="90"/>
+        </insert><insert tableName="meter_data">
+        <column name="meter_id" value="444"/>
+        <column name="date_of_data" value="2022-11-01 10:55:00.000000"/>
+        <column name="reading" value="15"/>
+    </insert>
+        <insert tableName="meter_data">
+            <column name="meter_id" value="444"/>
+            <column name="date_of_data" value="2022-11-30 10:55:00.000000"/>
+            <column name="reading" value="55"/>
+        </insert><insert tableName="meter_data">
+        <column name="meter_id" value="555"/>
+        <column name="date_of_data" value="2022-11-01 10:55:00.000000"/>
+        <column name="reading" value="54"/>
+    </insert>
+        <insert tableName="meter_data">
+            <column name="meter_id" value="555"/>
+            <column name="date_of_data" value="2022-11-30 10:55:00.000000"/>
+            <column name="reading" value="126"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

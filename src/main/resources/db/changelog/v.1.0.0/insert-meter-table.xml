@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="insert-meter-table" author="Ayan">
+        <preConditions onFail="WARN">
+            <sqlCheck expectedResult="2">select count(*)
+                                         from meter_group</sqlCheck>
+        </preConditions>
+        <insert tableName="meter">
+            <column name="id" value="111"/>
+            <column name="type" value="ELM 111"/>
+            <column name="meter_group_id" value="1"/>
+        </insert>
+        <insert tableName="meter">
+            <column name="id" value="222"/>
+            <column name="type" value="ELM 222"/>
+            <column name="meter_group_id" value="1"/>
+        </insert>
+        <insert tableName="meter">
+            <column name="id" value="333"/>
+            <column name="type" value="ELM 333"/>
+            <column name="meter_group_id" value="2"/>
+        </insert>
+        <insert tableName="meter">
+            <column name="id" value="444"/>
+            <column name="type" value="ELM 444"/>
+            <column name="meter_group_id" value="2"/>
+        </insert>
+        <insert tableName="meter">
+            <column name="id" value="555"/>
+            <column name="type" value="ELM 555"/>
+            <column name="meter_group_id" value="3"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
