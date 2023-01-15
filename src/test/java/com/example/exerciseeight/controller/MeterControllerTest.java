@@ -37,4 +37,12 @@ public class MeterControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void read() throws Exception {
+        this.mockMvc.perform(
+                get("/api/v1.0/read"))
+
+                .andExpect(status().isOk()).andReturn();
+    }
 }

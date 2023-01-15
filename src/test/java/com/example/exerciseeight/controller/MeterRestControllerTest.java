@@ -3,9 +3,6 @@ package com.example.exerciseeight.controller;
 import com.example.exerciseeight.ExerciseEightApplication;
 import com.example.exerciseeight.dto.MeterDto;
 import com.example.exerciseeight.service.MeterService;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -18,12 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
-
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,7 +65,7 @@ class MeterRestControllerTest {
     void testGroup() throws Exception {
         this.mockMvc.perform(
                 get("/api/v1.0/group"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk()) ;
     }
 }
 

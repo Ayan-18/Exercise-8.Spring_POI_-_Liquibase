@@ -5,8 +5,13 @@ import com.example.exerciseeight.service.MeterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping(path = "/api/v1.0")
@@ -23,5 +28,15 @@ public class MeterController {
         return modelAndView;
     }
 
+    @GetMapping(path = "/read")
+    public String read() {
+        return "download";
+    }
+
+    @PostMapping(path = "/read")
+    public String excellRead(@RequestParam MultipartFile file) throws IOException {
+        meterService.excellRead(file);
+        return "download";
+    }
 
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <METER_GROUP ID="11" NAME="room11"/>
+    <METER_GROUP ID="22" NAME="room22"/>
+    <METER_GROUP ID="33" NAME="room33"/>
+
+    <METER ID="11" TYPE="ELM11" METER_GROUP_ID="11"/>
+    <METER ID="22" TYPE="ELM22" METER_GROUP_ID="11"/>
+    <METER ID="33" TYPE="ELM33" METER_GROUP_ID="22"/>
+    <METER ID="44" TYPE="ELM44" METER_GROUP_ID="22"/>
+    <METER ID="55" TYPE="ELM55" METER_GROUP_ID="33"/>
+<!--    <meter_group id="11" name="room11"/>-->
+<!--    <meter_group id="22" name="room22"/>-->
+<!--    <meter_group id="33" name="room33"/>-->
+
+<!--    <meter id="11" type="ELM11" meter_group_id="11"/>-->
+<!--    <meter id="22" type="ELM22" meter_group_id="11"/>-->
+<!--    <meter id="33" type="ELM33" meter_group_id="22"/>-->
+<!--    <meter id="44" type="ELM44" meter_group_id="22"/>-->
+<!--    <meter id="55" type="ELM55" meter_group_id="33"/>-->
+</dataset>
+

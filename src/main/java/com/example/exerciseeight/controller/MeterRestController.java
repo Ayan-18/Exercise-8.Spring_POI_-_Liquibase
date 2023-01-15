@@ -3,13 +3,16 @@ package com.example.exerciseeight.controller;
 import com.example.exerciseeight.dto.MeterDto;
 import com.example.exerciseeight.service.MeterService;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.Map;
 
 @RestController
@@ -25,23 +28,17 @@ public class MeterRestController {
 
     @GetMapping(path = "/excell")
     public void excell(HttpServletResponse response) throws IOException {
-        meterService.excell();
-        File file = new File("C:\\Users\\77757\\Desktop\\JAVA\\Elasticsearch\\123.xls");
-        String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-        response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
-        response.setContentLength((int) file.length());
-        response.setContentType(mimeType);
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
+        Workbook workbook = meterService.excell();
+        response.setHeader("Content-Disposition", "inline;filename=\"" + URLEncoder.encode("Отчет.xls", "UTF-8") + "\"");
+        response.setContentType("application/xls");
+        OutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
     }
 
-    @GetMapping(path = "/read")
-    public void excellRead() throws IOException {
-        meterService.excellRead();
-    }
-
-    @GetMapping(path = "/group",produces = "application/json")
-    public Map<String, Long> group(){
+    @GetMapping(path = "/group", produces = "application/json")
+    public Map<String, Long> group() {
         return meterService.group();
     }
 }

@@ -16,11 +16,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.net.URLConnection;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
@@ -43,7 +43,7 @@ public class MeterService {
         return map;
     }
 
-    public void excell() throws IOException {
+    public Workbook excell() {
         LocalDate date = LocalDate.of(2022, 11, 23);
         LocalDate firstDay = date.with(TemporalAdjusters.firstDayOfMonth());
         LocalDate lastDay = date.with(TemporalAdjusters.firstDayOfNextMonth());
@@ -97,24 +97,33 @@ public class MeterService {
         Cell cellAll2 = rowAll.createCell(3);
         cellAll.setCellValue("Итого:");
         cellAll2.setCellValue(all);
-        FileOutputStream outputStream = new FileOutputStream("C:\\Users\\77757\\Desktop\\JAVA\\Elasticsearch\\123.xls");
-        workbook.write(outputStream);
-        outputStream.close();
 
-
-
+        return workbook;
     }
 
-    public void excellRead() throws IOException {
-        FileInputStream fis = new FileInputStream("C:\\Users\\77757\\Desktop\\JAVA\\Elasticsearch\\321.xls");
+    public void excellRead(MultipartFile multipartFile) throws IOException {
+        File file = new File("C:\\Users\\77757\\Desktop\\JAVA\\Elasticsearch\\asd.xls");
+        multipartFile.transferTo(file);
+        FileInputStream fis = new FileInputStream(file);
         Workbook workbook = new HSSFWorkbook(fis);
-        long meterId = (long) workbook.getSheetAt(0).getRow(0).getCell(1).getNumericCellValue();
-        String type = workbook.getSheetAt(0).getRow(0).getCell(3).getStringCellValue();
-        String group = workbook.getSheetAt(0).getRow(0).getCell(5).getStringCellValue();
-        LocalDateTime localDateTime = LocalDateTime.parse(workbook.getSheetAt(0).getRow(0).getCell(7).getStringCellValue());
-        double reading = workbook.getSheetAt(0).getRow(0).getCell(9).getNumericCellValue();
-        MeterDto meterDto = new MeterDto(meterId, type, group, localDateTime, reading);
-        save(meterDto);
+        Iterator<Row> rowIterator = workbook.getSheetAt(0).rowIterator();
+        int i = 0;
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            if (i == 0) {
+                i++;
+            } else {
+                System.out.println("<<<--->>>" + i);
+                long meterId = (long) workbook.getSheetAt(0).getRow(i).getCell(0).getNumericCellValue();
+                String type = workbook.getSheetAt(0).getRow(i).getCell(1).getStringCellValue();
+                String group = workbook.getSheetAt(0).getRow(i).getCell(2).getStringCellValue();
+                LocalDateTime localDateTime = LocalDateTime.parse(workbook.getSheetAt(0).getRow(i).getCell(3).getStringCellValue());
+                double reading = workbook.getSheetAt(0).getRow(i).getCell(4).getNumericCellValue();
+                MeterDto meterDto = new MeterDto(meterId, type, group, localDateTime, reading);
+                save(meterDto);
+                i++;
+            }
+        }
         fis.close();
     }
 
