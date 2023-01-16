@@ -18,24 +18,11 @@ public class DataSourceDBUnitTest extends DataSourceBasedDBTestCase {
     @Override
     protected DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
         dataSource.setDriverClassName("org.hsqldb.jdbc.JDBCDriver");
-
         dataSource.setUrl("jdbc:hsqldb:mem:java");
         dataSource.setUsername("");
         dataSource.setPassword("");
-
-//        dataSource.setSchema("PUBLIC");
-//        3c966983-b0e3-4344-8bf4-74008d7eda00
-
-
-//        dataSource.setDriverClassName("org.postgresql.Driver");
-//        dataSource.setUrl("jdbc:postgresql://localhost:5432/udalit");
-//        dataSource.setUsername("postgres");
-//        dataSource.setPassword("postgres");
-//        dataSource.setSchema("templates/schema.sql");
-
-
+        dataSource.setSchema("PUBLIC");
         return dataSource;
     }
 
