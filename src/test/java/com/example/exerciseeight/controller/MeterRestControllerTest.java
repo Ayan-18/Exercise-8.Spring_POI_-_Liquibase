@@ -31,7 +31,6 @@ class MeterRestControllerTest {
     @MockBean
     private MeterService meterService;
 
-
     @Test
     void testGetReading() throws Exception {
         MeterDto meterDto = new MeterDto();
@@ -50,22 +49,15 @@ class MeterRestControllerTest {
     @Test
     void testExcell() throws Exception {
         this.mockMvc.perform(
-                get("/api/v1.0/excell"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void testExcellRead() throws Exception {
-        this.mockMvc.perform(
-                get("/api/v1.0/read"))
+                        get("/api/v1.0/excell"))
                 .andExpect(status().isOk());
     }
 
     @Test
     void testGroup() throws Exception {
         this.mockMvc.perform(
-                get("/api/v1.0/group"))
-                .andExpect(status().isOk()) ;
+                        get("/api/v1.0/group"))
+                .andExpect(status().isOk());
     }
 }
 

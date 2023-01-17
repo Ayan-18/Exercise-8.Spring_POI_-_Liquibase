@@ -3,16 +3,11 @@ package com.example.exerciseeight.controller;
 import com.example.exerciseeight.dto.MeterDto;
 import com.example.exerciseeight.service.MeterService;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.*;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -28,13 +23,7 @@ public class MeterRestController {
 
     @GetMapping(path = "/excell")
     public void excell(HttpServletResponse response) throws IOException {
-        Workbook workbook = meterService.excell();
-        response.setHeader("Content-Disposition", "inline;filename=\"" + URLEncoder.encode("Отчет.xls", "UTF-8") + "\"");
-        response.setContentType("application/xls");
-        OutputStream outputStream = response.getOutputStream();
-        workbook.write(outputStream);
-        outputStream.flush();
-        outputStream.close();
+        meterService.excell(response);
     }
 
     @GetMapping(path = "/group", produces = "application/json")

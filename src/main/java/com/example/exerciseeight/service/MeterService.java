@@ -18,9 +18,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
@@ -43,7 +45,7 @@ public class MeterService {
         return map;
     }
 
-    public Workbook excell() {
+    public void excell(HttpServletResponse response) throws IOException {
         LocalDate date = LocalDate.of(2022, 11, 23);
         LocalDate firstDay = date.with(TemporalAdjusters.firstDayOfMonth());
         LocalDate lastDay = date.with(TemporalAdjusters.firstDayOfNextMonth());
@@ -71,7 +73,7 @@ public class MeterService {
             for (Meter meter : meterGroup.getMeterList()) {
                 Row rowMeter = sheet.createRow(rowCount);
                 Cell cellMeter = rowMeter.createCell(0);
-                cellMeter.setCellValue("Сч.ASD " + meter.getId() + " (" + meter.getType() + ")");
+                cellMeter.setCellValue("Сч. " + meter.getId() + " (" + meter.getType() + ")");
                 Cell cellDataMin = rowMeter.createCell(1);
                 Cell cellDataMax = rowMeter.createCell(2);
                 Cell cellDataTotal = rowMeter.createCell(3);
@@ -98,14 +100,16 @@ public class MeterService {
         cellAll.setCellValue("Итого:");
         cellAll2.setCellValue(all);
 
-        return workbook;
+        response.setHeader("Content-Disposition", "inline;filename=\"" + URLEncoder.encode("Отчет.xls", StandardCharsets.UTF_8) + "\"");
+        response.setContentType("application/xls");
+        OutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
     }
 
     public void excellRead(MultipartFile multipartFile) throws IOException {
-        File file = new File("C:\\Users\\77757\\Desktop\\JAVA\\Elasticsearch\\asd.xls");
-        multipartFile.transferTo(file);
-        FileInputStream fis = new FileInputStream(file);
-        Workbook workbook = new HSSFWorkbook(fis);
+        Workbook workbook = new HSSFWorkbook(multipartFile.getInputStream());
         Iterator<Row> rowIterator = workbook.getSheetAt(0).rowIterator();
         int i = 0;
         while (rowIterator.hasNext()) {
@@ -113,7 +117,6 @@ public class MeterService {
             if (i == 0) {
                 i++;
             } else {
-                System.out.println("<<<--->>>" + i);
                 long meterId = (long) workbook.getSheetAt(0).getRow(i).getCell(0).getNumericCellValue();
                 String type = workbook.getSheetAt(0).getRow(i).getCell(1).getStringCellValue();
                 String group = workbook.getSheetAt(0).getRow(i).getCell(2).getStringCellValue();
@@ -124,7 +127,6 @@ public class MeterService {
                 i++;
             }
         }
-        fis.close();
     }
 
     public void save(MeterDto meterDto) {

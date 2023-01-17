@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = {MeterService.class})
@@ -31,28 +31,36 @@ import static org.mockito.Mockito.*;
 class MeterServiceTest {
     @MockBean
     private MeterDataRepository meterDataRepository;
-
     @MockBean
     private MeterGroupRepository meterGroupRepository;
-
     @MockBean
     private MeterRepository meterRepository;
-
     @Autowired
     private MeterService meterService;
-
 
     @Test
     void testExcell() throws IOException {
         when(meterRepository.findAll()).thenReturn(new ArrayList<>());
         when(meterGroupRepository.findAll()).thenReturn(new ArrayList<>());
-        meterService.excell();
+        MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
+        meterService.excell(mockHttpServletResponse);
+        verify(meterRepository).findAll();
+        verify(meterGroupRepository).findAll();
+        assertTrue(mockHttpServletResponse.isCommitted());
+        assertNull(mockHttpServletResponse.getRedirectedUrl());
+        assertEquals(2, mockHttpServletResponse.getHeaderNames().size());
+        assertEquals("application/xls", mockHttpServletResponse.getContentType());
     }
-
 
     @Test
     void testExcellRead() throws IOException {
-          meterService.excellRead(new MockMultipartFile("Name", new ByteArrayInputStream("AAAAAAAA".getBytes(StandardCharsets.UTF_8))));
+        MockMultipartFile mockMultipartFile = new MockMultipartFile(
+                "multipartFile",
+                "templates/test.xls",
+                "application/x-xls",
+                new ClassPathResource("templates/test.xls").getInputStream());
+        testSave();
+        meterService.excellRead(mockMultipartFile);
     }
 
     @Test

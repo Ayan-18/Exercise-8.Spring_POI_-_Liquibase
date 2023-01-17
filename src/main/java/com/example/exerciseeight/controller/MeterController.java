@@ -34,8 +34,8 @@ public class MeterController {
     }
 
     @PostMapping(path = "/read")
-    public String excellRead(@RequestParam MultipartFile file) throws IOException {
-        meterService.excellRead(file);
+    public String excellRead(@RequestParam(name = "file") MultipartFile multipartFile) throws IOException {
+        meterService.excellRead(multipartFile);
         return "download";
     }
 

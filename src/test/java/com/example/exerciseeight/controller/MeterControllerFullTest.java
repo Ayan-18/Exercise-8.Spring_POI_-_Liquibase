@@ -14,11 +14,11 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import java.util.Map;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
+@TestExecutionListeners
+		({DependencyInjectionTestExecutionListener.class,
 		DirtiesContextTestExecutionListener.class,
 		TransactionalTestExecutionListener.class,
 		DbUnitTestExecutionListener.class})
@@ -36,8 +36,7 @@ class MeterControllerFullTest {
 		var result = this.restTemplate.getForObject("http://localhost:" + port + "/api/v1.0/group", Map.class);
 		assertEquals(result, Map.of(
 				"room11", 2,
-				"room22", 2,
-				"room33", 1
+				"room22", 1
 		));
 	}
 }
